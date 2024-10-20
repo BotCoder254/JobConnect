@@ -104,7 +104,7 @@ We'd like to express our heartfelt gratitude to all the contributors who have he
   <tr>
     <td align="center">
       <a href="https://github.com/BotCoder254">
-        <img src="" width="100px;" alt="Telvin Teum"/>
+        <img src="static/images/JobConnect.png" width="100px;" alt="Telvin Teum"/>
         <br />
         <sub><b>Telvin Teum</b></sub>
       </a>
@@ -115,7 +115,7 @@ We'd like to express our heartfelt gratitude to all the contributors who have he
     </td>
     <td align="center">
       <a href="https://github.com/contributor2">
-        <img src="https://avatars.githubusercontent.com/u/23456789?v=4" width="100px;" alt="Contributor 2"/>
+        <img src="static/images/JobConnect.png" width="100px;" alt="Contributor 2"/>
         <br />
         <sub><b>Contributor 2</b></sub>
       </a>
@@ -124,7 +124,7 @@ We'd like to express our heartfelt gratitude to all the contributors who have he
     </td>
     <!-- Add more contributors as needed -->
      <a https://github.com/SamuelDevp">
-        <img src="" width="100px;" alt="Telvin Teum"/>
+        <img src="static/images/JobConnect.png" width="100px;" alt="Telvin Teum"/>
         <br />
         <sub><b>Telvin Teum</b></sub>
       </a>
