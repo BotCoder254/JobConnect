@@ -1,0 +1,50 @@
+{% extends "base/base_layout.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Company Profile</h1>
+    
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center mb-6">
+            {% if company.logo_filename %}
+            <img src="{{ url_for('static', filename='uploads/company_logos/' + company.logo_filename) }}" alt="{{ company.name }} logo" class="w-24 h-24 object-contain mr-4">
+            {% else %}
+            <div class="w-24 h-24 bg-gray-300 flex items-center justify-center mr-4">
+                <i class="fas fa-building text-4xl text-gray-500"></i>
+            </div>
+            {% endif %}
+            <div>
+                <h2 class="text-2xl font-semibold mb-2">{{ company.name }}</h2>
+                <span class="bg-green-500 text-white px-2 py-1 rounded-full text-sm">Company</span>
+            </div>
+        </div>
+        
+        <p class="text-gray-600 mb-4">{{ company.description }}</p>
+        
+        <form action="{{ url_for('company.upload_logo') }}" method="POST" enctype="multipart/form-data" class="mb-6">
+            <div class="mb-4">
+                <label for="logo" class="block text-gray-700 text-sm font-bold mb-2">Update Company Logo</label>
+                <input type="file" name="logo" id="logo" accept="image/*" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <i class="fas fa-upload mr-2"></i>Upload Logo
+            </button>
+        </form>
+        
+        <h3 class="text-xl font-semibold mt-6 mb-4">Posted Jobs</h3>
+        <ul>
+            {% for job in company.jobs %}
+            <li class="mb-2">
+                <a href="{{ url_for('job.detail', job_id=job._id) }}" class="text-blue-500 hover:underline">
+                    <i class="fas fa-briefcase mr-2"></i>{{ job.title }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <a href="{{ url_for('job.create_job') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mt-4 inline-block">
+            <i class="fas fa-plus-circle mr-2"></i>Post New Job
+        </a>
+    </div>
+</div>
+{% endblock %}

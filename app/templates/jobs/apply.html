@@ -1,0 +1,50 @@
+{% extends "base/base_layout.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Apply for {{ job.title }}</h1>
+    
+    <form method="POST" action="{{ url_for('user.apply_job', job_id=job._id) }}" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        {{ form.hidden_tag() }}
+        <div class="mb-4">
+            {{ form.name.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.name(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+        </div>
+        <div class="mb-4">
+            {{ form.email.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.email(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+        </div>
+        <div class="mb-4">
+            {{ form.phone.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.phone(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+        </div>
+        <div class="mb-4">
+            {{ form.cover_letter.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.cover_letter(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", rows="5") }}
+        </div>
+        <div class="mb-4">
+            {{ form.resume.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+            {{ form.resume(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+        </div>
+        
+        {% for field in form %}
+            {% if field.name not in ['csrf_token', 'name', 'email', 'phone', 'cover_letter', 'resume'] %}
+            <div class="mb-4">
+                {{ field.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                {% if field.type == 'FileField' %}
+                    {{ field(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+                {% else %}
+                    {{ field(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
+                {% endif %}
+            </div>
+            {% endif %}
+        {% endfor %}
+        
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Submit Application
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

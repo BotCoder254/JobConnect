@@ -1,0 +1,73 @@
+{% extends "base/base_layout.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Job Listings</h1>
+    
+    <form method="GET" action="{{ url_for('job.list_jobs') }}" class="mb-8">
+        <div class="flex space-x-4">
+            <input type="text" name="search" placeholder="Search jobs..." value="{{ request.args.get('search', '') }}" class="flex-grow p-2 border rounded">
+            <select name="location" class="p-2 border rounded">
+                <option value="">All Locations</option>
+                {% for location in locations %}
+                <option value="{{ location }}" {% if request.args.get('location') == location %}selected{% endif %}>{{ location }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+        </div>
+    </form>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for job in jobs %}
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+            <h2 class="text-xl font-semibold mb-2">{{ job.title }}</h2>
+            <p class="text-gray-600 mb-4">{{ job.company_name }}</p>
+            <p class="text-sm text-gray-500 mb-4">
+                <i class="fas fa-map-marker-alt mr-2"></i>{{ job.location }}
+            </p>
+            <p class="text-sm text-gray-500 mb-4">
+                <i class="fas fa-dollar-sign mr-2"></i>{{ job.salary }}
+            </p>
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-sm text-gray-500">
+                    <i class="fas fa-users mr-2"></i>{{ job.applicants_count }} applicants
+                </span>
+                <span class="text-sm text-gray-500">
+                    <i class="fas fa-eye mr-2"></i>{{ job.views }} views
+                </span>
+            </div>
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-star text-yellow-400 mr-1"></i>
+                    <span class="text-sm text-gray-600">{{ job.rating|default(0, true)|round(1) }}</span>
+                </div>
+                <a href="{{ url_for('job.detail', job_id=job._id) }}" class="text-blue-500 hover:underline">View Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-8 flex justify-center">
+        {% if pagination.has_prev %}
+            <a href="{{ url_for('job.list_jobs', page=pagination.prev_num, **request.args) }}" class="mx-1 px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">&laquo; Previous</a>
+        {% endif %}
+
+        {% for page in pagination.iter_pages() %}
+            {% if page %}
+                {% if page != pagination.page %}
+                    <a href="{{ url_for('job.list_jobs', page=page, **request.args) }}" class="mx-1 px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">{{ page }}</a>
+                {% else %}
+                    <span class="mx-1 px-3 py-2 bg-blue-500 text-white rounded">{{ page }}</span>
+                {% endif %}
+            {% else %}
+                <span class="mx-1">…</span>
+            {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+            <a href="{{ url_for('job.list_jobs', page=pagination.next_num, **request.args) }}" class="mx-1 px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Next &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

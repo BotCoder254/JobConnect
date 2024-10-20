@@ -1,0 +1,88 @@
+{% extends "base/base_layout.html" %}
+
+{% block content %}
+<div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+    <div class="container mx-auto px-4 py-16">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <h1 class="text-5xl font-bold mb-4">Find Your Dream Job with JobConnect</h1>
+                <p class="text-xl mb-8">Connecting talented professionals with top companies worldwide.</p>
+                <div class="flex space-x-4">
+                    <a href="{{ url_for('auth.register') }}" class="bg-white text-blue-600 font-bold py-3 px-6 rounded-full hover:bg-blue-100 transition duration-300">
+                        <i class="fas fa-user-plus mr-2"></i>Sign Up
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="bg-transparent border-2 border-white text-white font-bold py-3 px-6 rounded-full hover:bg-white hover:text-blue-600 transition duration-300">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Log In
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <img src="{{ url_for('static', filename='images/hero-image.svg') }}" alt="Job Search" class="w-full">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold mb-8 text-center">Featured Jobs</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for job in featured_jobs %}
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+            <h3 class="text-xl font-semibold mb-2">{{ job.title }}</h3>
+            <p class="text-gray-600 mb-4">{{ job.company_name }}</p>
+            <p class="text-sm text-gray-500 mb-4">
+                <i class="fas fa-map-marker-alt mr-2"></i>{{ job.location }}
+            </p>
+            <a href="{{ url_for('job.detail', job_id=job._id) }}" class="text-blue-500 hover:underline">
+                <i class="fas fa-external-link-alt mr-2"></i>View Details
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8 text-center">Why Choose JobConnect?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <i class="fas fa-search text-5xl text-blue-500 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Easy Job Search</h3>
+                <p>Find the perfect job with our advanced search and filtering options.</p>
+            </div>
+            <div class="text-center">
+                <i class="fas fa-building text-5xl text-blue-500 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Top Companies</h3>
+                <p>Connect with leading companies across various industries.</p>
+            </div>
+            <div class="text-center">
+                <i class="fas fa-chart-line text-5xl text-blue-500 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-2">Career Growth</h3>
+                <p>Find opportunities that align with your career goals and aspirations.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold mb-8 text-center">Latest Job Categories</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {% for category in job_categories %}
+        <a href="{{ url_for('job.list_jobs', category=category) }}" class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 text-center">
+            <i class="fas fa-folder text-3xl text-blue-500 mb-2"></i>
+            <h3 class="text-lg font-semibold">{{ category }}</h3>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="bg-blue-600 text-white py-16">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to Start Your Career Journey?</h2>
+        <p class="text-xl mb-8">Join JobConnect today and discover exciting opportunities!</p>
+        <a href="{{ url_for('auth.register') }}" class="bg-white text-blue-600 font-bold py-3 px-6 rounded-full hover:bg-blue-100 transition duration-300">
+            <i class="fas fa-rocket mr-2"></i>Get Started
+        </a>
+    </div>
+</div>
+{% endblock %}

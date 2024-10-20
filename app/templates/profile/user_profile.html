@@ -1,0 +1,63 @@
+{% extends "base/base_layout.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">User Profile</h1>
+    
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center mb-6">
+            {% if current_user.profile_picture %}
+                <img src="{{ url_for('static', filename='uploads/profile_pictures/' + current_user.profile_picture) }}" alt="Profile Picture" class="w-24 h-24 rounded-full mr-4">
+            {% else %}
+                <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center mr-4">
+                    <i class="fas fa-user text-4xl text-gray-500"></i>
+                </div>
+            {% endif %}
+            <div>
+                <h2 class="text-2xl font-semibold">{{ current_user.username }}</h2>
+                <p class="text-gray-600">{{ current_user.email }}</p>
+                <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">{{ current_user.role }}</span>
+            </div>
+        </div>
+        
+        <form action="{{ url_for('user.update_profile') }}" method="POST" enctype="multipart/form-data" class="mb-6">
+            <div class="mb-4">
+                <label for="profile_picture" class="block text-gray-700 text-sm font-bold mb-2">Update Profile Picture</label>
+                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Update Profile Picture
+            </button>
+        </form>
+        
+        <h3 class="text-xl font-semibold mt-6 mb-4">Resume</h3>
+        {% if current_user.resume_filename %}
+        <p>Current resume: {{ current_user.resume_filename }}</p>
+        <a href="{{ url_for('user.download_resume') }}" class="text-blue-500 hover:underline">
+            <i class="fas fa-download mr-2"></i>Download Resume
+        </a>
+        {% else %}
+        <p>No resume uploaded yet.</p>
+        {% endif %}
+        
+        <form action="{{ url_for('user.upload_resume') }}" method="POST" enctype="multipart/form-data" class="mt-4">
+            <input type="file" name="resume" accept=".pdf,.doc,.docx" required>
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mt-2">
+                <i class="fas fa-upload mr-2"></i>Upload Resume
+            </button>
+        </form>
+        
+        <h3 class="text-xl font-semibold mt-6 mb-4">Job Applications</h3>
+        <ul>
+            {% for application in current_user.applications %}
+            <li class="mb-2">
+                <a href="{{ url_for('job.detail', job_id=application.job_id) }}" class="text-blue-500 hover:underline">
+                    <i class="fas fa-briefcase mr-2"></i>{{ application.job_title }}
+                </a>
+                - <span class="text-gray-600">{{ application.status }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
