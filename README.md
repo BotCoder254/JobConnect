@@ -155,7 +155,7 @@ For any questions or concerns, please [open an issue](https://github.com/BotCode
 ---
 
 <p align="center">
-  <i>Coded with ❤️ by <a href="https://github.com/BotCoder254">Telvin Teum</a> and the open-source community</i>
+  <i>Coded with ❤️ by <a href="https://github.com/BotCoder254">Nairobi BotCodders</a> and the open-source community</i>
 </p>
 
 <p align="center">
