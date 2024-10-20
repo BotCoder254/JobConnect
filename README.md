@@ -124,7 +124,8 @@ We'd like to express our heartfelt gratitude to all the contributors who have he
       <a href="#code-contributor2" title="Code">💻</a>
     </td>
     <!-- Add more contributors as needed -->
-     <a https://github.com/SamuelDevp">
+     <td>
+       <a href="https://github.com/SamuelDevp">
         <img src="static/images/JobConnect.png" width="100px;" alt="Telvin Teum"/>
         <br />
         <sub><b>Samuel Devp</b></sub>
@@ -133,6 +134,7 @@ We'd like to express our heartfelt gratitude to all the contributors who have he
       <a href="#code-BotCoder254" title="Code">💻</a>
       <a href="#design-BotCoder254" title="Design">🎨</a>
       <a href="#doc-BotCoder254" title="Documentation">📖</a>
+     </td>
   </tr>
 </table>
 
