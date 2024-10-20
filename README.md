@@ -114,10 +114,10 @@ We'd like to express our heartfelt gratitude to all the contributors who have he
       <a href="#doc-BotCoder254" title="Documentation">📖</a>
     </td>
     <td align="center">
-      <a href="https://github.com/contributor2">
+      <a href="https://github.com/Hyake">
         <img src="static/images/JobConnect.png" width="100px;" alt="Contributor 2"/>
         <br />
-        <sub><b>Contributor 2</b></sub>
+        <sub><b>Hyake</b></sub>
       </a>
       <br />
       <a href="#code-contributor2" title="Code">💻</a>
