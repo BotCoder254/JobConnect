@@ -82,9 +82,10 @@ JobConnect is an open-source, state-of-the-art job board platform designed to br
    cd JobConnect   ```
 2. Set up a virtual environment
 3. Install dependencies
-4. Configure environment variables
-5. Initialize the database
-6. Run the development server
+4. create an uploads folder in the static folder 
+5. Configure environment variables
+6. Initialize the database
+7. Run the development server
 
 For detailed instructions, see the [Installation](DOCUMENTATION.md#installation) section in our documentation.
 
