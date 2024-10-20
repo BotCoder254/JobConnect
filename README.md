@@ -126,7 +126,7 @@ We'd like to express our heartfelt gratitude to all the contributors who have he
      <a https://github.com/SamuelDevp">
         <img src="static/images/JobConnect.png" width="100px;" alt="Telvin Teum"/>
         <br />
-        <sub><b>Telvin Teum</b></sub>
+        <sub><b>Samuel Devp</b></sub>
       </a>
       <br />
       <a href="#code-BotCoder254" title="Code">💻</a>
