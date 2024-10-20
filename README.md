@@ -104,7 +104,7 @@ We'd like to express our heartfelt gratitude to all the contributors who have he
   <tr>
     <td align="center">
       <a href="https://github.com/BotCoder254">
-        <img src="https://avatars.githubusercontent.com/u/12345678?v=4" width="100px;" alt="Telvin Teum"/>
+        <img src="" width="100px;" alt="Telvin Teum"/>
         <br />
         <sub><b>Telvin Teum</b></sub>
       </a>
@@ -123,6 +123,15 @@ We'd like to express our heartfelt gratitude to all the contributors who have he
       <a href="#code-contributor2" title="Code">💻</a>
     </td>
     <!-- Add more contributors as needed -->
+     <a https://github.com/SamuelDevp">
+        <img src="" width="100px;" alt="Telvin Teum"/>
+        <br />
+        <sub><b>Telvin Teum</b></sub>
+      </a>
+      <br />
+      <a href="#code-BotCoder254" title="Code">💻</a>
+      <a href="#design-BotCoder254" title="Design">🎨</a>
+      <a href="#doc-BotCoder254" title="Documentation">📖</a>
   </tr>
 </table>
 
