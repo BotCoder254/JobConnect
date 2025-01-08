@@ -1,37 +1,175 @@
- 
 {% extends "base/base_layout.html" %}
 
 {% block content %}
-<div class="max-w-md mx-auto mt-10">
-    <h2 class="text-2xl font-bold mb-5">Register</h2>
-    <form method="POST" action="{{ url_for('auth.register') }}">
-        <div class="mb-4">
-            <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Username</label>
-            <input type="text" name="username" id="username" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+<div class="min-h-screen w-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="flex w-full max-w-6xl">
+        <!-- Left Side - Image -->
+        <div class="hidden lg:block w-1/2 relative overflow-hidden rounded-l-2xl">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                 class="absolute inset-0 w-full h-full object-cover" alt="Office">
+            <div class="absolute inset-0 bg-gradient-to-br from-[#1E1B4B]/90 via-[#2D1B69]/90 to-black/80"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-center p-8">
+                    <h2 class="text-3xl font-bold text-white mb-4">Join JobConnect</h2>
+                    <p class="text-gray-200 text-lg">Create your account and start your journey to finding your dream career.</p>
+                </div>
+            </div>
         </div>
-        <div class="mb-4">
-            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-            <input type="email" name="email" id="email" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+
+        <!-- Right Side - Form -->
+        <div class="w-full lg:w-1/2 glass-effect p-8 sm:p-12 rounded-2xl lg:rounded-l-none">
+            <div class="w-full max-w-md mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-white">Create Account</h2>
+                    <p class="mt-2 text-gray-300">Fill in your details to get started</p>
+                </div>
+
+                <form method="POST" class="space-y-6">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="first_name" class="block text-sm font-medium text-black mb-2">First Name</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-user text-black"></i>
+                                </div>
+                                {{ form.first_name(class="block w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 text-black", placeholder="First name") }}
+                            </div>
+                            {% if form.first_name.errors %}
+                                {% for error in form.first_name.errors %}
+                                    <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-black mb-2">Last Name</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-user text-black"></i>
+                                </div>
+                                {{ form.last_name(class="block w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 text-black", placeholder="Last name") }}
+                            </div>
+                            {% if form.last_name.errors %}
+                                {% for error in form.last_name.errors %}
+                                    <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-black mb-2">Email Address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-black"></i>
+                            </div>
+                            {{ form.email(class="block w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 text-black", placeholder="Enter your email") }}
+                        </div>
+                        {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                                <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-black mb-2">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-black"></i>
+                            </div>
+                            {{ form.password(class="block w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 text-black", placeholder="Create a password") }}
+                        </div>
+                        {% if form.password.errors %}
+                            {% for error in form.password.errors %}
+                                <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label for="confirm_password" class="block text-sm font-medium text-black mb-2">Confirm Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-black"></i>
+                            </div>
+                            {{ form.confirm_password(class="block w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 text-black", placeholder="Confirm your password") }}
+                        </div>
+                        {% if form.confirm_password.errors %}
+                            {% for error in form.confirm_password.errors %}
+                                <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-black mb-2">I am a...</label>
+                        {{ form.role(class="block w-full py-3 px-4 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black") }}
+                        {% if form.role.errors %}
+                            {% for error in form.role.errors %}
+                                <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="flex items-center">
+                        {{ form.accept_terms(class="h-4 w-4 bg-white border-gray-200 rounded focus:ring-blue-500 focus:border-blue-500 text-blue-600") }}
+                        <label for="accept_terms" class="ml-2 block text-sm text-black">
+                            I accept the <a href="#" class="text-blue-600 hover:text-blue-700">Terms and Conditions</a>
+                        </label>
+                        {% if form.accept_terms.errors %}
+                            {% for error in form.accept_terms.errors %}
+                                <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-lg hover:opacity-90 transition duration-300 transform hover:scale-105">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-gray-300">
+                        Already have an account? 
+                        <a href="{{ url_for('auth.login') }}" class="text-blue-400 hover:text-blue-300 font-medium">Sign in</a>
+                    </p>
+                </div>
+
+                <!-- Social Registration -->
+                <div class="mt-8">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-white/10"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-[#1E1B4B] text-gray-300">Or register with</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-2 gap-4">
+                        <button class="w-full py-3 px-4 glass-effect rounded-lg hover:bg-white/10 transition duration-300 flex items-center justify-center">
+                            <i class="fab fa-google text-white mr-2"></i>
+                            <span class="text-white">Google</span>
+                        </button>
+                        <button class="w-full py-3 px-4 glass-effect rounded-lg hover:bg-white/10 transition duration-300 flex items-center justify-center">
+                            <i class="fab fa-linkedin text-white mr-2"></i>
+                            <span class="text-white">LinkedIn</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="mb-4">
-            <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-            <input type="password" name="password" id="password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-        <div class="mb-6">
-            <label for="role" class="block text-gray-700 text-sm font-bold mb-2">Role</label>
-            <select name="role" id="role" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="job_seeker">Job Seeker</option>
-                <option value="company">Company</option>
-            </select>
-        </div>
-        <div class="flex items-center justify-between">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Register
-            </button>
-            <a href="{{ url_for('auth.login') }}" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
-                Already have an account?
-            </a>
-        </div>
-    </form>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #1E1B4B 0%, #2D1B69 100%);
+    }
+</style>
 {% endblock %}

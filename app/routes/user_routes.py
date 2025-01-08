@@ -5,8 +5,10 @@ from app import mongo
 from bson import ObjectId
 import os
 from datetime import datetime
-from wtforms import Form, StringField, TextAreaField, DecimalField, SelectField, FieldList, FormField, BooleanField, Optional, FileField
-from wtforms.validators import DataRequired, Email, Length, FileAllowed
+from typing import Optional
+from wtforms import Form, StringField, TextAreaField, DecimalField, SelectField, FieldList, FormField, BooleanField, FileField
+from wtforms.validators import DataRequired, Email, Length
+from flask_wtf.file import FileAllowed
 from app.forms import JobApplicationForm
 
 bp = Blueprint('user', __name__)
@@ -65,59 +67,58 @@ def download_resume():
     flash('Resume not found', 'error')
     return redirect(url_for('user.profile'))
 
-@bp.route('/apply/<job_id>', methods=['GET', 'POST'])
+@bp.route('/job/<job_id>/apply', methods=['GET', 'POST'])
 @login_required
 def apply_job(job_id):
+    # Check if already applied
+    existing_application = mongo.db.applications.find_one({
+        "user_id": str(current_user._id),
+        "job_id": job_id
+    })
+    
+    if existing_application:
+        flash('You have already applied for this job.', 'warning')
+        return redirect(url_for('job.detail', job_id=job_id))
+
     job = mongo.db.jobs.find_one({'_id': ObjectId(job_id)})
     if not job:
         flash('Job not found', 'error')
         return redirect(url_for('job.list_jobs'))
 
-    form = JobApplicationForm()
-
-    # Add dynamic fields based on job's custom fields
-    for field in job.get('custom_fields', []):
-        if field['type'] == 'file':
-            setattr(form, field['name'], FileField(field['name'], validators=[FileAllowed(['pdf', 'doc', 'docx'])]))
-        else:
-            setattr(form, field['name'], StringField(field['name'], validators=[DataRequired() if field['required'] else Optional()]))
-
-    if form.validate_on_submit():
+    if request.method == 'POST':
+        # Create application
         application = {
-            'user_id': ObjectId(current_user.get_id()),
-            'job_id': ObjectId(job_id),
-            'name': form.name.data,
-            'email': form.email.data,
-            'phone': form.phone.data,
-            'cover_letter': form.cover_letter.data,
-            'status': 'pending',
-            'applied_at': datetime.utcnow()
+            "user_id": str(current_user._id),
+            "job_id": job_id,
+            "status": "pending",
+            "applied_date": datetime.utcnow(),
+            "resume_url": request.form.get('resume_url'),
+            "cover_letter": request.form.get('cover_letter')
         }
-
-        # Handle resume upload
-        if form.resume.data:
-            resume_filename = secure_filename(form.resume.data.filename)
-            resume_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'resumes', resume_filename)
-            form.resume.data.save(resume_path)
-            application['resume_filename'] = resume_filename
-
-        # Handle custom field data
-        for field in job.get('custom_fields', []):
-            field_name = field['name']
-            if field['type'] == 'file':
-                if getattr(form, field_name).data:
-                    filename = secure_filename(getattr(form, field_name).data.filename)
-                    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'application_files', filename)
-                    getattr(form, field_name).data.save(file_path)
-                    application[field_name] = filename
-            else:
-                application[field_name] = getattr(form, field_name).data
-
+        
         mongo.db.applications.insert_one(application)
-        flash('Application submitted successfully', 'success')
-        return redirect(url_for('job.detail', job_id=job_id))
+        flash('Application submitted successfully!', 'success')
+        return redirect(url_for('user.applications'))
+    
+    return render_template('user/apply.html', job=job)
 
-    return render_template('jobs/apply.html', form=form, job=job)
+@bp.route('/applications')
+@login_required
+def applications():
+    # Get user's job applications
+    applications = list(mongo.db.applications.find({"user_id": str(current_user._id)}))
+    
+    # Get job details for each application
+    for app in applications:
+        job = mongo.db.jobs.find_one({"_id": ObjectId(app['job_id'])})
+        if job:
+            app['job'] = job
+            # Get company details
+            company = mongo.db.companies.find_one({"_id": ObjectId(job['company_id'])})
+            if company:
+                app['company'] = company
+    
+    return render_template('user/applications.html', applications=applications)
 
 def allowed_file(filename, allowed_extensions):
     return '.' in filename and \

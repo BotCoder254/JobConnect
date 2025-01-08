@@ -1,0 +1,193 @@
+{% extends "base/base_layout.html" %}
+
+{% block content %}
+<div class="min-h-screen py-8">
+    <div class="container mx-auto px-4">
+        <!-- Welcome Section -->
+        <div class="glass-effect rounded-xl p-8 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">Welcome, {{ company.name }}!</h1>
+                    <p class="text-gray-300">Manage your job postings and applications</p>
+                </div>
+                <a href="{{ url_for('job.create_job') }}" 
+                   class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-lg hover:opacity-90 transition duration-300">
+                    <i class="fas fa-plus mr-2"></i>
+                    Post New Job
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="glass-effect rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-white">Active Jobs</h3>
+                    <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                        <i class="fas fa-briefcase text-blue-400"></i>
+                    </div>
+                </div>
+                <p class="text-3xl font-bold text-white">{{ stats.active_jobs }}</p>
+                <p class="text-gray-400 text-sm">Currently active listings</p>
+            </div>
+
+            <div class="glass-effect rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-white">Total Applications</h3>
+                    <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                        <i class="fas fa-paper-plane text-purple-400"></i>
+                    </div>
+                </div>
+                <p class="text-3xl font-bold text-white">{{ stats.total_applications }}</p>
+                <p class="text-gray-400 text-sm">Applications received</p>
+            </div>
+
+            <div class="glass-effect rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-white">Views</h3>
+                    <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                        <i class="fas fa-eye text-green-400"></i>
+                    </div>
+                </div>
+                <p class="text-3xl font-bold text-white">{{ stats.total_views }}</p>
+                <p class="text-gray-400 text-sm">Job listing views</p>
+            </div>
+
+            <div class="glass-effect rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-white">Hired</h3>
+                    <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                        <i class="fas fa-user-check text-yellow-400"></i>
+                    </div>
+                </div>
+                <p class="text-3xl font-bold text-white">{{ stats.hired_count }}</p>
+                <p class="text-gray-400 text-sm">Candidates hired</p>
+            </div>
+        </div>
+
+        <!-- Active Jobs -->
+        <div class="glass-effect rounded-xl p-8 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-white">Active Job Listings</h2>
+                <a href="{{ url_for('job.create_job') }}" class="text-blue-400 hover:text-blue-300 transition">
+                    Post New Job <i class="fas fa-plus ml-2"></i>
+                </a>
+            </div>
+            
+            {% if jobs %}
+            <div class="space-y-4">
+                {% for job in jobs %}
+                <div class="flex items-center justify-between p-6 rounded-lg bg-white/5 hover:bg-white/10 transition">
+                    <div class="flex-grow">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-semibold text-white">{{ job.title }}</h3>
+                            <span class="px-4 py-2 rounded-full text-sm font-medium bg-green-500/20 text-green-300">
+                                Active
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-400">
+                            <p><i class="fas fa-map-marker-alt mr-2"></i>{{ job.location }}</p>
+                            <p><i class="fas fa-clock mr-2"></i>Posted {{ (now - job.posted_date).days }} days ago</p>
+                            <p><i class="fas fa-users mr-2"></i>{{ job.applications_count }} applications</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4 ml-8">
+                        <a href="{{ url_for('job.detail', job_id=job._id) }}" 
+                           class="px-4 py-2 glass-effect rounded-lg hover:bg-white/10 transition">
+                            <i class="fas fa-eye mr-2"></i>
+                            View
+                        </a>
+                        <a href="{{ url_for('job.edit', job_id=job._id) }}" 
+                           class="px-4 py-2 glass-effect rounded-lg hover:bg-white/10 transition">
+                            <i class="fas fa-edit mr-2"></i>
+                            Edit
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-briefcase text-2xl text-gray-400"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-2">No Active Jobs</h3>
+                <p class="text-gray-400 mb-6">Start posting jobs to find the perfect candidates.</p>
+                <a href="{{ url_for('job.create_job') }}" 
+                   class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-lg hover:opacity-90 transition duration-300">
+                    <i class="fas fa-plus mr-2"></i>
+                    Post Your First Job
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Recent Applications -->
+        <div class="glass-effect rounded-xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-white">Recent Applications</h2>
+                <a href="#" class="text-blue-400 hover:text-blue-300 transition">
+                    View All <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            {% if recent_applications %}
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-gray-400 border-b border-gray-700">
+                            <th class="pb-4">Applicant</th>
+                            <th class="pb-4">Job Position</th>
+                            <th class="pb-4">Applied Date</th>
+                            <th class="pb-4">Status</th>
+                            <th class="pb-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        {% for application in recent_applications %}
+                        <tr class="text-white">
+                            <td class="py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                                        <i class="fas fa-user text-white"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold">{{ application.user.name }}</p>
+                                        <p class="text-sm text-gray-400">{{ application.user.email }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4">{{ application.job.title }}</td>
+                            <td class="py-4">{{ application.applied_date.strftime('%b %d, %Y') }}</td>
+                            <td class="py-4">
+                                <span class="px-3 py-1 rounded-full text-sm font-medium
+                                    {% if application.status == 'pending' %}
+                                        bg-yellow-500/20 text-yellow-300
+                                    {% elif application.status == 'accepted' %}
+                                        bg-green-500/20 text-green-300
+                                    {% elif application.status == 'rejected' %}
+                                        bg-red-500/20 text-red-300
+                                    {% else %}
+                                        bg-blue-500/20 text-blue-300
+                                    {% endif %}
+                                ">
+                                    {{ application.status|title }}
+                                </span>
+                            </td>
+                            <td class="py-4">
+                                <a href="#" class="text-blue-400 hover:text-blue-300 transition">View Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center text-gray-400">
+                <p>No recent applications to display.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
